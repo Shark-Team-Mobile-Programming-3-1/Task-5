@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.UgandaConnect" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/uganda_black</item>
+        <item name="colorOnPrimary">@color/uganda_yellow</item>
+        <item name="colorSecondary">@color/uganda_red</item>
+        <item name="colorSecondaryContainer">#FFF1A8</item>
+        <item name="colorOnSecondaryContainer">@color/uganda_black</item>
+        <item name="android:statusBarColor">@color/uganda_black</item>
+    </style>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Uganda flag colours -->
+    <color name="uganda_black">#FF000000</color>
+    <color name="uganda_yellow">#FFFCDC04</color>
+    <color name="uganda_red">#FFD90000</color>
+
+    <!-- Service colours -->
+    <color name="green_rea">#FF2E7D32</color>
+    <color name="blue_health">#FF1565C0</color>
+
+    <color name="white">#FFFFFFFF</color>
+</resources>

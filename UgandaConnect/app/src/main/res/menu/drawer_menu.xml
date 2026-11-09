@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/drawer_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/drawer_solar"
+            android:icon="@drawable/ic_solar"
+            android:title="Solar Subsidies" />
+
+        <item
+            android:id="@+id/drawer_health"
+            android:icon="@drawable/ic_hospital"
+            android:title="Healthcare" />
+
+        <item
+            android:id="@+id/drawer_results"
+            android:icon="@drawable/ic_school"
+            android:title="My Results" />
+
+        <item
+            android:id="@+id/drawer_bills"
+            android:icon="@drawable/ic_receipt"
+            android:title="Bill Payments" />
+    </group>
+</menu>
