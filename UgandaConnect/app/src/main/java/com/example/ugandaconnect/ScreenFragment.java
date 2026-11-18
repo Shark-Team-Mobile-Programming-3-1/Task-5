@@ -54,13 +54,9 @@ public class ScreenFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        adapter = new ItemAdapter(buildRows(), new ItemAdapter.OnRowClickListener() {
-            @Override
-            public void onRowClick(ItemAdapter.Row row) {
-                // if the row points to a screen, open it
-                if (row.target != null) {
-                    ((MainActivity) requireActivity()).openScreen(row.target);
-                }
+        adapter = new ItemAdapter(buildRows(), row -> {
+            if (row.target != null && isAdded()) {
+                ((MainActivity) requireActivity()).openScreen(row.target);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -77,48 +73,54 @@ public class ScreenFragment extends Fragment {
     private List<ItemAdapter.Row> buildRows() {
         List<ItemAdapter.Row> rows = new ArrayList<>();
 
-        if (screenKey.equals(MainActivity.RESULTS)) {
-            // 60 fake UNEB results
-            String[] names = {"Akello Grace", "Okello Peter", "Nakato Sarah", "Mugisha John",
-                    "Namukasa Ruth", "Ssemakula David", "Atim Joy", "Opio Samuel",
-                    "Kiiza Brian", "Nambi Esther"};
-            for (int i = 0; i < 60; i++) {
-                String name = names[i % names.length] + " #" + (i + 1);
-                String index = String.format(Locale.US, "U%04d/%03d", 1000 + i * 7, 100 + i);
-                String subtitle = "Index: " + index + " - Division " + (1 + i % 4);
-                rows.add(new ItemAdapter.Row(name, subtitle, null));
+        switch (screenKey) {
+            case MainActivity.RESULTS: {
+                // 60 fake UNEB results
+                String[] names = {"Akello Grace", "Okello Peter", "Nakato Sarah", "Mugisha John",
+                        "Namukasa Ruth", "Ssemakula David", "Atim Joy", "Opio Samuel",
+                        "Kiiza Brian", "Nambi Esther"};
+                for (int resultsIndex = 0; resultsIndex < 60; resultsIndex++) {
+                    String name = names[resultsIndex % names.length] + " #" + (resultsIndex + 1);
+                    String index = String.format(Locale.US, "U%04d/%03d", 1000 + resultsIndex * 7, 100 + resultsIndex);
+                    String subtitle = "Index: " + index + " - Division " + (1 + resultsIndex % 4);
+                    rows.add(new ItemAdapter.Row(name, subtitle, null));
+                }
+                break;
             }
-
-        } else if (screenKey.equals(MainActivity.HOME)) {
-            rows.add(new ItemAdapter.Row("Solar Subsidies",
-                    "Apply via the Rural Electrification Agency", MainActivity.SOLAR));
-            rows.add(new ItemAdapter.Row("Healthcare",
-                    "Book appointments, see lab results", MainActivity.HEALTH));
-            rows.add(new ItemAdapter.Row("My Results",
-                    "UCE / UACE results and school term dates", MainActivity.RESULTS));
-            rows.add(new ItemAdapter.Row("Bill Payments",
-                    "Pay UMEME and NWSC, report issues to KCCA", MainActivity.BILLS));
-            for (int i = 1; i <= 25; i++) {
-                rows.add(new ItemAdapter.Row("Announcement #" + i,
-                        "Sample public notice for scrolling", null));
+            case MainActivity.HOME: {
+                rows.add(new ItemAdapter.Row("Solar Subsidies",
+                        "Apply via the Rural Electrification Agency", MainActivity.SOLAR));
+                rows.add(new ItemAdapter.Row("Healthcare",
+                        "Book appointments, see lab results", MainActivity.HEALTH));
+                rows.add(new ItemAdapter.Row("My Results",
+                        "UCE / UACE results and school term dates", MainActivity.RESULTS));
+                rows.add(new ItemAdapter.Row("Bill Payments",
+                        "Pay UMEME and NWSC, report issues to KCCA", MainActivity.BILLS));
+                for (int homeIndex = 1; homeIndex <= 25; homeIndex++) {
+                    rows.add(new ItemAdapter.Row("Announcement #" + homeIndex,
+                            "Sample public notice for scrolling", null));
+                }
+                break;
             }
-
-        } else if (screenKey.equals(MainActivity.SERVICES)) {
-            rows.add(new ItemAdapter.Row("Solar Subsidies",
-                    "Apply via the Rural Electrification Agency", MainActivity.SOLAR));
-            rows.add(new ItemAdapter.Row("Healthcare",
-                    "Book appointments, see lab results", MainActivity.HEALTH));
-            rows.add(new ItemAdapter.Row("My Results",
-                    "UCE / UACE results and school term dates", MainActivity.RESULTS));
-            rows.add(new ItemAdapter.Row("Bill Payments",
-                    "Pay UMEME and NWSC, report issues to KCCA", MainActivity.BILLS));
-
-        } else {
-            // Bookmarks, Profile, Solar, Health, Bills: simple sample rows
-            String title = MainActivity.getTitleFor(screenKey);
-            for (int i = 1; i <= 30; i++) {
-                rows.add(new ItemAdapter.Row(title + " item " + i,
-                        "Sample text for scrolling", null));
+            case MainActivity.SERVICES: {
+                rows.add(new ItemAdapter.Row("Solar Subsidies",
+                        "Apply via the Rural Electrification Agency", MainActivity.SOLAR));
+                rows.add(new ItemAdapter.Row("Healthcare",
+                        "Book appointments, see lab results", MainActivity.HEALTH));
+                rows.add(new ItemAdapter.Row("My Results",
+                        "UCE / UACE results and school term dates", MainActivity.RESULTS));
+                rows.add(new ItemAdapter.Row("Bill Payments",
+                        "Pay UMEME and NWSC, report issues to KCCA", MainActivity.BILLS));
+                break;
+            }
+            default: {
+                // Bookmarks, Profile, Solar, Health, Bills: simple sample rows
+                String title = MainActivity.getTitleFor(screenKey);
+                for (int itemIndex = 1; itemIndex <= 30; itemIndex++) {
+                    rows.add(new ItemAdapter.Row(title + " item " + itemIndex,
+                            "Sample text for scrolling", null));
+                }
+                break;
             }
         }
         return rows;

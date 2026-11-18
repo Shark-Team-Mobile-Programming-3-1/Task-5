@@ -4,12 +4,12 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:title="@string/nav_home" />
 
     <item
         android:id="@+id/nav_services"
         android:icon="@drawable/ic_apps"
-        android:title="Services" />
+        android:title="@string/nav_services" />
 
     <!-- empty space where the FAB sits (cannot be clicked) -->
     <item
@@ -21,10 +21,10 @@
     <item
         android:id="@+id/nav_bookmarks"
         android:icon="@drawable/ic_bookmark"
-        android:title="Bookmarks" />
+        android:title="@string/nav_bookmarks" />
 
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_person"
-        android:title="Profile" />
+        android:title="@string/nav_profile" />
 </menu>

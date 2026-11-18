@@ -5,26 +5,26 @@
         <item
             android:id="@+id/drawer_home"
             android:icon="@drawable/ic_home"
-            android:title="Home" />
+            android:title="@string/nav_home" />
 
         <item
             android:id="@+id/drawer_solar"
             android:icon="@drawable/ic_solar"
-            android:title="Solar Subsidies" />
+            android:title="@string/drawer_solar" />
 
         <item
             android:id="@+id/drawer_health"
             android:icon="@drawable/ic_hospital"
-            android:title="Healthcare" />
+            android:title="@string/drawer_health" />
 
         <item
             android:id="@+id/drawer_results"
             android:icon="@drawable/ic_school"
-            android:title="My Results" />
+            android:title="@string/drawer_results" />
 
         <item
             android:id="@+id/drawer_bills"
             android:icon="@drawable/ic_receipt"
-            android:title="Bill Payments" />
+            android:title="@string/drawer_bills" />
     </group>
 </menu>

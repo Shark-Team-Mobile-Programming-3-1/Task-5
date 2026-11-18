@@ -8,6 +8,6 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Report Issue"
+        android:contentDescription="@string/report_issue"
         android:src="@drawable/ic_add" />
 </FrameLayout>

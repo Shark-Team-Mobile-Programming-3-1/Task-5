@@ -23,9 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:navigationContentDescription="Open menu"
+                app:navigationContentDescription="@string/open_menu"
                 app:navigationIcon="@drawable/ic_menu"
-                app:title="UgandaConnect" />
+                app:title="@string/app_name" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- Fragments are shown here -->
@@ -64,7 +64,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Report Issue"
+            android:contentDescription="@string/report_issue"
             android:src="@drawable/ic_add"
             app:layout_anchor="@id/bottom_app_bar" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -17,9 +17,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     // One row of data
     public static class Row {
-        public String title;
-        public String subtitle;
-        public String target; // screen to open when clicked (null = nothing happens)
+        public final String title;
+        public final String subtitle;
+        public final String target; // screen to open when clicked (null = nothing happens)
 
         public Row(String title, String subtitle, String target) {
             this.title = title;
@@ -29,6 +29,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     // Used to tell the fragment that a row was clicked
+    @FunctionalInterface
     public interface OnRowClickListener {
         void onRowClick(Row row);
     }
@@ -83,9 +84,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     // Holds the views of one row
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView titleText;
-        TextView subtitleText;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView titleText;
+        final TextView subtitleText;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);

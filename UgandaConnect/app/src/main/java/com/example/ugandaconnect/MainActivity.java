@@ -30,6 +30,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigationrail.NavigationRailView;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     // Names of all the screens
@@ -118,53 +120,59 @@ public class MainActivity extends AppCompatActivity {
 
         // SEARCH
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Search...");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+            if (searchView != null) {
+                searchView.setQueryHint("Search...");
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterCurrentScreen(newText);
-                return true;
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        filterCurrentScreen(newText);
+                        return true;
+                    }
+                });
             }
-        });
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
+            searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
+                    return true;
+                }
 
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                filterCurrentScreen(""); // show the full list again
-                return true;
-            }
-        });
+                @Override
+                public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
+                    filterCurrentScreen(""); // show the full list again
+                    return true;
+                }
+            });
+        }
 
         // NOTIFICATION BELL with badge
         MenuItem bellItem = menu.findItem(R.id.action_notifications);
-        View bellView = bellItem.getActionView();
-        bellIcon = bellView.findViewById(R.id.bell_icon);
-        badgeText = bellView.findViewById(R.id.badge_text);
-        bellView.setOnClickListener(v -> {
-            unreadCount = 0;   // user has read the notifications
-            updateBadge();
-            Toast.makeText(MainActivity.this, "No new notifications", Toast.LENGTH_SHORT).show();
-        });
+        if (bellItem != null) {
+            View bellView = bellItem.getActionView();
+            if (bellView != null) {
+                bellIcon = bellView.findViewById(R.id.bell_icon);
+                badgeText = bellView.findViewById(R.id.badge_text);
+                bellView.setOnClickListener(v -> {
+                    unreadCount = 0;   // user has read the notifications
+                    updateBadge();
+                    Toast.makeText(MainActivity.this, "No new notifications", Toast.LENGTH_SHORT).show();
+                });
+            }
+        }
         updateBadge();
     }
 
     private void setupDrawer() {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
-            String key = HOME;
-            if (id == R.id.drawer_home) {
-                key = HOME;
-            } else if (id == R.id.drawer_solar) {
+            String key;
+            if (id == R.id.drawer_solar) {
                 key = SOLAR;
             } else if (id == R.id.drawer_health) {
                 key = HEALTH;
@@ -172,9 +180,11 @@ public class MainActivity extends AppCompatActivity {
                 key = RESULTS;
             } else if (id == R.id.drawer_bills) {
                 key = BILLS;
+            } else {
+                key = HOME;
             }
             drawerLayout.closeDrawer(GravityCompat.START);
-            if (!key.equals(currentKey)) {
+            if (!Objects.equals(key, currentKey)) {
                 openScreen(key);
             }
             return true;
@@ -190,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             String key = getKeyFromNavItem(item.getItemId());
-            if (!key.equals(currentKey)) {
+            if (!Objects.equals(key, currentKey)) {
                 openScreen(key);
             }
             return true;
@@ -206,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             String key = getKeyFromNavItem(item.getItemId());
-            if (!key.equals(currentKey)) {
+            if (!Objects.equals(key, currentKey)) {
                 openScreen(key);
             }
             return true;
@@ -243,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             public void handleOnBackPressed() {
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
-                } else if (!currentKey.equals(HOME)) {
+                } else if (!HOME.equals(currentKey)) {
                     openScreen(HOME);
                 } else {
                     setEnabled(false);
@@ -267,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         updateScreenUi(key);
     }
 
-    // Change title, colours and selected items to match the screen
+    // Change title, colors and selected items to match the screen
     private void updateScreenUi(String key) {
         updatingUi = true;
 
@@ -292,44 +302,50 @@ public class MainActivity extends AppCompatActivity {
         // highlight the right item in the drawer
         int drawerId = getDrawerItemId(key);
         Menu drawerMenu = navigationView.getMenu();
-        for (int i = 0; i < drawerMenu.size(); i++) {
-            MenuItem item = drawerMenu.getItem(i);
+        for (int drawerIndex = 0; drawerIndex < drawerMenu.size(); drawerIndex++) {
+            MenuItem item = drawerMenu.getItem(drawerIndex);
             item.setChecked(item.getItemId() == drawerId);
         }
 
         updatingUi = false;
     }
 
-    // Brand identity: black/yellow normally, and a different colour for each service
+    // Brand identity: black/yellow normally, and a different color for each service
     private void applyColors(String key) {
         int barColor;
         int contentColor;
 
-        if (key.equals(SOLAR)) {
-            barColor = ContextCompat.getColor(this, R.color.green_rea);       // green for REA
-            contentColor = ContextCompat.getColor(this, R.color.white);
-        } else if (key.equals(HEALTH)) {
-            barColor = ContextCompat.getColor(this, R.color.blue_health);     // blue for health
-            contentColor = ContextCompat.getColor(this, R.color.white);
-        } else if (key.equals(RESULTS)) {
-            barColor = ContextCompat.getColor(this, R.color.uganda_yellow);   // yellow for education
-            contentColor = ContextCompat.getColor(this, R.color.uganda_black);
-        } else if (key.equals(BILLS)) {
-            barColor = ContextCompat.getColor(this, R.color.uganda_red);      // red for public agencies
-            contentColor = ContextCompat.getColor(this, R.color.white);
-        } else {
-            barColor = ContextCompat.getColor(this, R.color.uganda_black);    // Uganda colours
-            contentColor = ContextCompat.getColor(this, R.color.uganda_yellow);
+        switch (key) {
+            case SOLAR:
+                barColor = ContextCompat.getColor(this, R.color.green_rea);       // green for REA
+                contentColor = ContextCompat.getColor(this, R.color.white);
+                break;
+            case HEALTH:
+                barColor = ContextCompat.getColor(this, R.color.blue_health);     // blue for health
+                contentColor = ContextCompat.getColor(this, R.color.white);
+                break;
+            case RESULTS:
+                barColor = ContextCompat.getColor(this, R.color.uganda_yellow);   // yellow for education
+                contentColor = ContextCompat.getColor(this, R.color.uganda_black);
+                break;
+            case BILLS:
+                barColor = ContextCompat.getColor(this, R.color.uganda_red);      // red for public agencies
+                contentColor = ContextCompat.getColor(this, R.color.white);
+                break;
+            default:
+                barColor = ContextCompat.getColor(this, R.color.uganda_black);    // Uganda colors
+                contentColor = ContextCompat.getColor(this, R.color.uganda_yellow);
+                break;
         }
 
         appBarLayout.setBackgroundColor(barColor);
         toolbar.setTitleTextColor(contentColor);
         toolbar.setNavigationIconTint(contentColor);
 
-        // colour the icons in the toolbar menu (the search icon)
+        // color the icons in the toolbar menu (the search icon)
         Menu menu = toolbar.getMenu();
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
+        for (int toolbarIndex = 0; toolbarIndex < menu.size(); toolbarIndex++) {
+            MenuItem item = menu.getItem(toolbarIndex);
             Drawable icon = item.getIcon();
             if (icon != null) {
                 Drawable wrapped = DrawableCompat.wrap(icon.mutate());
@@ -338,19 +354,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // colour the bell and the text inside the search box
+        // color the bell and the text inside the search box
         if (bellIcon != null) {
             bellIcon.setColorFilter(contentColor);
         }
         if (searchView != null) {
             EditText searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-            searchText.setTextColor(contentColor);
-            searchText.setHintTextColor(contentColor);
+            if (searchText != null) {
+                searchText.setTextColor(contentColor);
+                searchText.setHintTextColor(contentColor);
+            }
             ImageView closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
-            closeButton.setColorFilter(contentColor);
+            if (closeButton != null) {
+                closeButton.setColorFilter(contentColor);
+            }
         }
 
-        // colour the FAB
+        // color the FAB
         fab.setBackgroundTintList(ColorStateList.valueOf(barColor));
         fab.setImageTintList(ColorStateList.valueOf(contentColor));
         fab.setContentDescription(getFabText(key));
@@ -397,38 +417,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static String getTitleFor(String key) {
-        if (key.equals(HOME)) {
-            return "UgandaConnect";
-        } else if (key.equals(SERVICES)) {
-            return "Services";
-        } else if (key.equals(BOOKMARKS)) {
-            return "Bookmarks";
-        } else if (key.equals(PROFILE)) {
-            return "Profile";
-        } else if (key.equals(SOLAR)) {
-            return "Solar Subsidies";
-        } else if (key.equals(HEALTH)) {
-            return "Healthcare";
-        } else if (key.equals(RESULTS)) {
-            return "My Results";
-        } else if (key.equals(BILLS)) {
-            return "Bill Payments";
+        switch (key) {
+            case SERVICES:
+                return "Services";
+            case BOOKMARKS:
+                return "Bookmarks";
+            case PROFILE:
+                return "Profile";
+            case SOLAR:
+                return "Solar Subsidies";
+            case HEALTH:
+                return "Healthcare";
+            case RESULTS:
+                return "My Results";
+            case BILLS:
+                return "Bill Payments";
+            case HOME:
+            default:
+                return "UgandaConnect";
         }
-        return "UgandaConnect";
     }
 
     private String getFabText(String key) {
-        if (key.equals(SOLAR) || key.equals(HEALTH)) {
-            return "Start New Application";
+        switch (key) {
+            case SOLAR:
+            case HEALTH:
+                return "Start New Application";
+            default:
+                return "Report Issue";
         }
-        return "Report Issue";
     }
 
     // bottom bar / rail item id -> screen name
     private String getKeyFromNavItem(int id) {
-        if (id == R.id.nav_home) {
-            return HOME;
-        } else if (id == R.id.nav_services) {
+        if (id == R.id.nav_services) {
             return SERVICES;
         } else if (id == R.id.nav_bookmarks) {
             return BOOKMARKS;
@@ -440,29 +462,33 @@ public class MainActivity extends AppCompatActivity {
 
     // screen name -> bottom bar / rail item id
     private int getNavItemId(String key) {
-        if (key.equals(HOME)) {
-            return R.id.nav_home;
-        } else if (key.equals(BOOKMARKS)) {
-            return R.id.nav_bookmarks;
-        } else if (key.equals(PROFILE)) {
-            return R.id.nav_profile;
+        switch (key) {
+            case HOME:
+                return R.id.nav_home;
+            case BOOKMARKS:
+                return R.id.nav_bookmarks;
+            case PROFILE:
+                return R.id.nav_profile;
+            default:
+                return R.id.nav_services; // Services and all four service screens
         }
-        return R.id.nav_services; // Services and all four service screens
     }
 
     // screen name -> drawer item id (-1 means no drawer item is selected)
     private int getDrawerItemId(String key) {
-        if (key.equals(HOME)) {
-            return R.id.drawer_home;
-        } else if (key.equals(SOLAR)) {
-            return R.id.drawer_solar;
-        } else if (key.equals(HEALTH)) {
-            return R.id.drawer_health;
-        } else if (key.equals(RESULTS)) {
-            return R.id.drawer_results;
-        } else if (key.equals(BILLS)) {
-            return R.id.drawer_bills;
+        switch (key) {
+            case HOME:
+                return R.id.drawer_home;
+            case SOLAR:
+                return R.id.drawer_solar;
+            case HEALTH:
+                return R.id.drawer_health;
+            case RESULTS:
+                return R.id.drawer_results;
+            case BILLS:
+                return R.id.drawer_bills;
+            default:
+                return -1;
         }
-        return -1;
     }
 }

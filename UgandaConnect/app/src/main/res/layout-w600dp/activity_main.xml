@@ -36,9 +36,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
-                    app:navigationContentDescription="Open menu"
+                    app:navigationContentDescription="@string/open_menu"
                     app:navigationIcon="@drawable/ic_menu"
-                    app:title="UgandaConnect" />
+                    app:title="@string/app_name" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <FrameLayout

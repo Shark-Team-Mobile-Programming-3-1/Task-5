@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">UgandaConnect</string>
+    <string name="nav_header_subtitle">Government services in one app</string>
+    <string name="open_menu">Open menu</string>
+    <string name="report_issue">Report Issue</string>
+    <string name="notifications">Notifications</string>
+    <string name="search">Search</string>
+
+    <!-- Navigation Titles -->
+    <string name="nav_home">Home</string>
+    <string name="nav_services">Services</string>
+    <string name="nav_bookmarks">Bookmarks</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Drawer Titles -->
+    <string name="drawer_solar">Solar Subsidies</string>
+    <string name="drawer_health">Healthcare</string>
+    <string name="drawer_results">My Results</string>
+    <string name="drawer_bills">Bill Payments</string>
 </resources>
