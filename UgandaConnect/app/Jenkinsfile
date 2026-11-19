@@ -17,9 +17,8 @@ pipeline {
                     bat 'if exist resultats.jtl del /F /Q resultats.jtl'
 
                     // 2. Run JMeter
-                    // Note: We use ../../ to go back to the root directory where the .jmx file is located
-                    // Adjust the .jmx filename if necessary
-                    bat '"C:\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t ../../UgandaConnect_Test.jmx -l resultats.jtl -e -o rapport-html'
+                    // Note: We use ../ to go up one level from 'app/' to 'UgandaConnect/' where the .jmx file is located
+                    bat '"C:\\apache-jmeter-5.6.3\\bin\\jmeter.bat" -n -t ../UgandaConnect_Test.jmx -l resultats.jtl -e -o rapport-html'
                 }
             }
         }
